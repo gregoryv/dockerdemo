@@ -1,8 +1,6 @@
-FROM golang:1.19.2
-
-WORKDIR /
+FROM scratch
 
 COPY dockerdemo /
 
-CMD /dockerdemo
+CMD ["/dockerdemo"]
 

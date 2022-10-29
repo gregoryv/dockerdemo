@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -23,6 +25,10 @@ func main() {
 	if server.String() == "" {
 		fmt.Println("must specify --server, try --help")
 		os.Exit(1)
+	}
+
+	for _, e := range os.Environ() {
+		log.Print(e)
 	}
 
 	http.HandleFunc("/", noop)
@@ -47,10 +53,16 @@ loop:
 		if err != nil {
 			log.Print(err)
 		} else {
-			log.Print(resp.Status)
+			var buf bytes.Buffer
+			io.Copy(&buf, resp.Body)
+			resp.Body.Close()
+			log.Println(resp.Status, buf.String())
 		}
 	}
 	defer log.Print("stop")
 }
 
-func noop(w http.ResponseWriter, r *http.Request) {}
+func noop(w http.ResponseWriter, r *http.Request) {
+	data := os.Getenv("HOSTNAME")
+	fmt.Fprint(w, "from ", data)
+}
