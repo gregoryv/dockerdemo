@@ -1,4 +1,4 @@
-dockerdemo - 
+dockerdemo - showing how to link containers in docker compose
 
 ## Quick start
 
