@@ -1,0 +1,11 @@
+version: "3.5"
+services:
+  s1:
+    environment:
+      SERVER: "http://s2:8088"
+    image: x:latest
+
+  s2:
+    environment:
+      SERVER: "http://s1:8088"
+    image: x:latest
